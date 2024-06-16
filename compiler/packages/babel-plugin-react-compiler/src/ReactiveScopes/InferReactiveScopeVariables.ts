@@ -186,7 +186,10 @@ export function isMutable({ id }: Instruction, place: Place): boolean {
   return id >= range.start && id < range.end;
 }
 
-function mayAllocate(env: Environment, instruction: Instruction): boolean {
+export function mayAllocate(
+  env: Environment,
+  instruction: Instruction
+): boolean {
   const { value } = instruction;
   switch (value.kind) {
     case "Destructure": {
@@ -199,6 +202,7 @@ function mayAllocate(env: Environment, instruction: Instruction): boolean {
     case "DeclareContext":
     case "StoreLocal":
     case "LoadGlobal":
+    case "MetaProperty":
     case "TypeCastExpression":
     case "LoadLocal":
     case "LoadContext":

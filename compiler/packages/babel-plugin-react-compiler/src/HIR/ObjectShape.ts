@@ -118,6 +118,7 @@ function addShape(
 export type HookKind =
   | "useContext"
   | "useState"
+  | "useReducer"
   | "useRef"
   | "useEffect"
   | "useLayoutEffect"
@@ -187,6 +188,7 @@ export type ObjectShape = {
  * the inferred types for [] and {}.
  */
 export type ShapeRegistry = Map<string, ObjectShape>;
+export const BuiltInPropsId = "BuiltInProps";
 export const BuiltInArrayId = "BuiltInArray";
 export const BuiltInFunctionId = "BuiltInFunction";
 export const BuiltInJsxId = "BuiltInJsx";
@@ -200,9 +202,16 @@ export const BuiltInUseEffectHookId = "BuiltInUseEffectHook";
 export const BuiltInUseLayoutEffectHookId = "BuiltInUseLayoutEffectHook";
 export const BuiltInUseInsertionEffectHookId = "BuiltInUseInsertionEffectHook";
 export const BuiltInUseOperatorId = "BuiltInUseOperator";
+export const BuiltInUseReducerId = "BuiltInUseReducer";
+export const BuiltInDispatchId = "BuiltInDispatch";
 
 // ShapeRegistry with default definitions for built-ins.
 export const BUILTIN_SHAPES: ShapeRegistry = new Map();
+
+// If the `ref` prop exists, it has the ref type
+addObject(BUILTIN_SHAPES, BuiltInPropsId, [
+  ["ref", { kind: "Object", shapeId: BuiltInUseRefId }],
+]);
 
 /* Built-in array shape */
 addObject(BUILTIN_SHAPES, BuiltInArrayId, [
@@ -383,6 +392,25 @@ addObject(BUILTIN_SHAPES, BuiltInUseStateId, [
         returnValueKind: ValueKind.Primitive,
       },
       BuiltInSetStateId
+    ),
+  ],
+]);
+
+addObject(BUILTIN_SHAPES, BuiltInUseReducerId, [
+  ["0", { kind: "Poly" }],
+  [
+    "1",
+    addFunction(
+      BUILTIN_SHAPES,
+      [],
+      {
+        positionalParams: [],
+        restParam: Effect.Freeze,
+        returnType: PRIMITIVE_TYPE,
+        calleeEffect: Effect.Read,
+        returnValueKind: ValueKind.Primitive,
+      },
+      BuiltInDispatchId
     ),
   ],
 ]);
