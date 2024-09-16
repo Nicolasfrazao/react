@@ -7,11 +7,13 @@
  * @flow
  */
 
+export {default as rendererVersion} from 'shared/ReactVersion';
+export const rendererPackageName = 'react-server-dom-bun';
+
 export * from 'react-client/src/ReactFlightClientStreamConfigWeb';
-export * from 'react-client/src/ReactFlightClientConsoleConfigPlain';
+export * from 'react-client/src/ReactClientConsoleConfigPlain';
 export * from 'react-dom-bindings/src/shared/ReactFlightClientConfigDOM';
 
-export type Response = any;
 export opaque type ModuleLoading = mixed;
 export opaque type SSRModuleMap = mixed;
 export opaque type ServerManifest = mixed;
